@@ -11,7 +11,7 @@ public class Anmeldesystem {
     private static int tutors_min_available = 5;
     private static int min_students_per_group = 4;
     private static int max_students_per_group = 6;
-    private static int max_students_total = tutors_min_available*max_students_per_group;
+    private static int max_students_total;
     private static boolean accept_registration = true;
 
 
@@ -21,6 +21,8 @@ public class Anmeldesystem {
             min_students_per_group = Integer.valueOf(args[1]);
             max_students_per_group = Integer.valueOf(args[2]);
         }
+
+        max_students_total = tutors_min_available*max_students_per_group;
 
         System.out.println("Willkommen im Anmeldesystem der Übungsgruppen. Es sind Gruppen von min. " + min_students_per_group + " und max. " + max_students_per_group + " Studenten vorgesehen.");
         System.out.println("Freie Plätze: " + anmeldungen.size() + " / " + max_students_total);
@@ -76,12 +78,12 @@ public class Anmeldesystem {
     }
 
     private static void zuordnen(){
-        if(tutoren.size() < tutors_min_available){
+        if(tutoren.size() < tutors_min_available){ // Check if there are enough tut's registered
             System.out.println("Es sind noch nicht genügend Tutoren angemeldet.");
             return;
         }
 
-        accept_registration = false;
+        accept_registration = false; // Set Registration to closed
 
         int groups = groupsNeeded(); // Get Count of needed Groups
         int currentgroup = 0;
@@ -89,7 +91,7 @@ public class Anmeldesystem {
             gruppen.add(new Gruppe()); // Create Groups
         }
 
-        for(Student student : anmeldungen){
+        for(Student student : anmeldungen){ // run trough all registrations
             gruppen.get(currentgroup).addTeilnehmer(student);
 
             if(currentgroup == groups-1) {
@@ -99,7 +101,7 @@ public class Anmeldesystem {
             }
         }
         currentgroup = 0;
-        for(Tutor tutor : tutoren){
+        for(Tutor tutor : tutoren){ // run through all tut's
             gruppen.get(currentgroup).addTutor(tutor);
 
             if(currentgroup == groups-1) {
@@ -110,6 +112,14 @@ public class Anmeldesystem {
         }
     }
 
+    /*
+
+    Print List of assignment in this format:
+    groupname:
+     - Max Mustermann (tutor)
+     - Anja Musterfrau
+
+     */
     private static void print(){
         int i = 1;
         for(Gruppe gruppe : gruppen){
