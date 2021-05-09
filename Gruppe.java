@@ -17,7 +17,7 @@ public class Gruppe {
     }
 
     public List<Student> getTeilnehmer() {
-        return teilnehmer;
+        return null;
     }
 
     public void setTeilnehmer(ArrayList<Student> teilnehmer) {
